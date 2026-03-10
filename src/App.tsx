@@ -50,8 +50,8 @@ interface FactorColumn {
 
 export default function App() {
   const [step, setStep] = useState<'input' | 'visualize'>('input');
-  const [input1, setInput1] = useState<string>('12');
-  const [input2, setInput2] = useState<string>('18');
+  const [input1, setInput1] = useState<string>('');
+  const [input2, setInput2] = useState<string>('');
   const [factors1, setFactors1] = useState<number[]>([]);
   const [factors2, setFactors2] = useState<number[]>([]);
   const [isAligned, setIsAligned] = useState(false);
@@ -149,7 +149,7 @@ export default function App() {
                       value={input1}
                       onChange={(e) => setInput1(e.target.value)}
                       className="w-full text-5xl font-mono border-b-4 border-stone-100 focus:border-stone-900 outline-none transition-all text-center py-4 bg-transparent"
-                      placeholder="12"
+                      placeholder="300"
                     />
                   </div>
                   <div className="flex flex-col gap-4 items-center">
@@ -159,7 +159,7 @@ export default function App() {
                       value={input2}
                       onChange={(e) => setInput2(e.target.value)}
                       className="w-full text-5xl font-mono border-b-4 border-stone-100 focus:border-stone-900 outline-none transition-all text-center py-4 bg-transparent"
-                      placeholder="18"
+                      placeholder="540"
                     />
                   </div>
                 </div>
