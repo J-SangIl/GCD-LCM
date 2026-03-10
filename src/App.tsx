@@ -231,78 +231,90 @@ export default function App() {
                     </div>
                   ) : (
                     /* Aligned Vertical Layout */
-                    <div className="flex flex-col gap-6 w-full max-w-4xl mx-auto">
+                    <div className="grid grid-cols-[auto_1fr_auto] gap-x-6 w-full max-w-5xl mx-auto overflow-x-auto pb-8">
                       {/* Row 1 */}
-                      <div className="flex items-center gap-6">
-                        <div className="w-24 text-right font-black text-3xl text-stone-200 font-mono">{input1}</div>
-                        <div className="flex gap-3 flex-1">
-                          {alignedColumns.map((col) => (
-                            <div key={`r1-${col.id}`} className="w-12 h-16 flex items-center justify-center">
-                              {col.val1 && (
-                                <motion.div
-                                  layoutId={`card-${col.id}-1`}
-                                  className={`w-12 h-16 ${getPrimeColor(col.val1)} rounded-xl shadow-md flex items-center justify-center text-white font-bold text-2xl`}
-                                >
-                                  {col.val1}
-                                </motion.div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
+                      <div className="h-16 flex items-center justify-end font-black text-3xl text-stone-200 font-mono shrink-0">
+                        {input1}
                       </div>
-                      {/* Row 2 */}
-                      <div className="flex items-center gap-6">
-                        <div className="w-24 text-right font-black text-3xl text-stone-200 font-mono">{input2}</div>
-                        <div className="flex gap-3 flex-1">
-                          {alignedColumns.map((col) => (
-                            <div key={`r2-${col.id}`} className="w-12 h-16 flex items-center justify-center">
-                              {col.val2 && (
-                                <motion.div
-                                  layoutId={`card-${col.id}-2`}
-                                  className={`w-12 h-16 ${getPrimeColor(col.val2)} rounded-xl shadow-md flex items-center justify-center text-white font-bold text-2xl`}
-                                >
-                                  {col.val2}
-                                </motion.div>
-                              )}
-                            </div>
-                          ))}
-                        </div>
+                      <div className="flex gap-3">
+                        {alignedColumns.map((col) => (
+                          <div key={`r1-${col.id}`} className="w-12 h-16 flex items-center justify-center shrink-0">
+                            {col.val1 && (
+                              <motion.div
+                                layoutId={`card-${col.id}-1`}
+                                className={`w-12 h-16 ${getPrimeColor(col.val1)} rounded-xl shadow-md flex items-center justify-center text-white font-bold text-2xl`}
+                              >
+                                {col.val1}
+                              </motion.div>
+                            )}
+                          </div>
+                        ))}
                       </div>
+                      <div className="w-12" />
 
-                      {/* Result Cards Row (Dropping down) */}
-                      <div className="mt-12 pt-12 border-t-2 border-dashed border-stone-100 flex items-center gap-6 min-h-[100px]">
-                        <div className="w-24 text-right font-bold text-stone-400 text-sm uppercase tracking-tighter">
-                          {resultMode === 'gcd' ? '공통 소인수' : resultMode === 'lcm' ? '모든 소인수' : ''}
-                        </div>
-                        <div className="flex gap-3 flex-1 items-center">
-                          <AnimatePresence>
-                            {resultMode !== 'none' && alignedColumns.map((col, idx) => {
-                              const show = resultMode === 'gcd' 
-                                ? (col.val1 !== null && col.val2 !== null)
-                                : (col.val1 !== null || col.val2 !== null);
-                              
-                              return show ? (
-                                <motion.div
-                                  key={`res-${col.id}`}
-                                  initial={{ y: -100, opacity: 0, scale: 0.5 }}
-                                  animate={{ y: 0, opacity: 1, scale: 1 }}
-                                  exit={{ y: 20, opacity: 0 }}
-                                  transition={{ type: 'spring', damping: 15, delay: idx * 0.05 }}
-                                  className={`w-12 h-16 ${getPrimeColor(col.prime)} rounded-xl shadow-xl flex items-center justify-center text-white font-bold text-2xl ring-4 ring-white`}
-                                >
-                                  {col.prime}
-                                </motion.div>
-                              ) : (
-                                <div key={`res-empty-${col.id}`} className="w-12 h-16" />
-                              );
-                            })}
-                          </AnimatePresence>
+                      {/* Row 2 */}
+                      <div className="h-16 flex items-center justify-end font-black text-3xl text-stone-200 font-mono shrink-0">
+                        {input2}
+                      </div>
+                      <div className="flex gap-3">
+                        {alignedColumns.map((col) => (
+                          <div key={`r2-${col.id}`} className="w-12 h-16 flex items-center justify-center shrink-0">
+                            {col.val2 && (
+                              <motion.div
+                                layoutId={`card-${col.id}-2`}
+                                className={`w-12 h-16 ${getPrimeColor(col.val2)} rounded-xl shadow-md flex items-center justify-center text-white font-bold text-2xl`}
+                              >
+                                {col.val2}
+                              </motion.div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="w-12" />
+
+                      {/* Divider */}
+                      <div className="col-span-3 my-8 border-t-2 border-dashed border-stone-100" />
+
+                      {/* Result Row */}
+                      <div className="h-16 flex items-center justify-end font-bold text-stone-400 text-sm uppercase tracking-tighter text-right shrink-0">
+                        {resultMode === 'gcd' ? '공통 소인수' : resultMode === 'lcm' ? '모든 소인수' : ''}
+                      </div>
+                      <div className="flex gap-3">
+                        {alignedColumns.map((col, idx) => {
+                          const show = resultMode === 'gcd' 
+                            ? (col.val1 !== null && col.val2 !== null)
+                            : (col.val1 !== null || col.val2 !== null);
                           
+                          return (
+                            <div key={`res-slot-${col.id}`} className="w-12 h-16 flex items-center justify-center shrink-0">
+                              <AnimatePresence>
+                                {resultMode !== 'none' && show && (
+                                  <motion.div
+                                    key={`res-card-${col.id}`}
+                                    initial={{ y: -120, opacity: 0, scale: 0.5 }}
+                                    animate={{ y: 0, opacity: 1, scale: 1 }}
+                                    exit={{ y: 20, opacity: 0 }}
+                                    transition={{ type: 'spring', damping: 15, delay: idx * 0.05 }}
+                                    className={`w-12 h-16 ${getPrimeColor(col.prime)} rounded-xl shadow-xl flex items-center justify-center text-white font-bold text-2xl ring-4 ring-white`}
+                                  >
+                                    {col.prime}
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      
+                      {/* Result Value */}
+                      <div className="flex items-center pl-8 shrink-0">
+                        <AnimatePresence>
                           {resultMode !== 'none' && (
                             <motion.div 
                               initial={{ opacity: 0, x: 20 }}
                               animate={{ opacity: 1, x: 0 }}
-                              className="flex items-center gap-4 ml-8"
+                              exit={{ opacity: 0, x: 10 }}
+                              className="flex items-center gap-4"
                             >
                               <ArrowRight className="w-8 h-8 text-stone-300" />
                               <div className="flex flex-col">
@@ -313,7 +325,7 @@ export default function App() {
                               </div>
                             </motion.div>
                           )}
-                        </div>
+                        </AnimatePresence>
                       </div>
                     </div>
                   )}
